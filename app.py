@@ -7,11 +7,11 @@ from scrape import scrape
 
 app = Flask(__name__)
 
-@app.route('/')
+@app.route('/', methods=['GET'])
 def main():
     return json.dumps({'name': 'rajdeep', 'desc': 'API is working'})
 
-@app.route('/historical/daily')
+@app.route('/historical/daily', methods=['GET'])
 def getDailyData():
     scr = scrape()
     scr.getDaily()
@@ -21,7 +21,7 @@ def getDailyData():
         hist[int(dataHist['Day'][i])] = dataHist['Price'][i]
     return json.dumps(hist)
 
-@app.route('/historical/weekly')
+@app.route('/historical/weekly', methods=['GET'])
 def getWeeklyData():
     scr = scrape()
     scr.getWeekly()
@@ -31,7 +31,7 @@ def getWeeklyData():
         hist[int(dataHist['Day'][i])] = dataHist['Price'][i]
     return json.dumps(hist)
 
-@app.route('/historical/monthly')
+@app.route('/historical/monthly', methods=['GET'])
 def getMonthlyData():
     scr = scrape()
     scr.getMonthly()
