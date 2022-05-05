@@ -1,15 +1,18 @@
 from flask import Flask
 import json
 import pandas as pd
+from requests import request
 
 
 from scrape import scrape
+from predictARIMA import *
 
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def main():
     return json.dumps({'name': 'rajdeep', 'desc': 'API is working'})
+
 
 @app.route('/historical/daily', methods=['GET'])
 def getDailyData():
@@ -21,6 +24,7 @@ def getDailyData():
         hist[int(dataHist['Day'][i])] = dataHist['Price'][i]
     return json.dumps(hist)
 
+
 @app.route('/historical/weekly', methods=['GET'])
 def getWeeklyData():
     scr = scrape()
@@ -31,6 +35,7 @@ def getWeeklyData():
         hist[int(dataHist['Day'][i])] = dataHist['Price'][i]
     return json.dumps(hist)
 
+
 @app.route('/historical/monthly', methods=['GET'])
 def getMonthlyData():
     scr = scrape()
@@ -40,6 +45,22 @@ def getMonthlyData():
     for i in range(len(dataHist)):
         hist[int(dataHist['Day'][i])] = dataHist['Price'][i]
     return json.dumps(hist)
+
+
+@app.route('/predict/ARIMA/SS', methods=['GET'])
+def predictARIMASS():
+    p = predictARIMA()
+    return json.dumps(p.getSS())
+
+
+@app.route('/predict/ARIMA/MS/<int:step>', methods=['GET'])
+def predictARIMAMS(step):
+    p = predictARIMA()
+    j = {}
+    res = p.getMS(steps=step)
+    for i, item in enumerate(res):
+        j[i] = item
+    return json.dumps(j)
 
 
 app.run()
