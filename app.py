@@ -7,6 +7,7 @@ from requests import request
 from scrape import scrape
 from predictARIMA import *
 
+scrp = scrape()
 app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
@@ -16,8 +17,7 @@ def main():
 
 @app.route('/historical/daily', methods=['GET'])
 def getDailyData():
-    scr = scrape()
-    scr.getDaily()
+    scrp.getDaily()
     dataHist = pd.read_csv('./sih-2022/data/daily.csv')
     hist = {}
     for i in range(len(dataHist)):
@@ -27,8 +27,7 @@ def getDailyData():
 
 @app.route('/historical/weekly', methods=['GET'])
 def getWeeklyData():
-    scr = scrape()
-    scr.getWeekly()
+    scrp.getWeekly()
     dataHist = pd.read_csv('./sih-2022/data/weekly.csv')
     hist = {}
     for i in range(len(dataHist)):
@@ -38,8 +37,7 @@ def getWeeklyData():
 
 @app.route('/historical/monthly', methods=['GET'])
 def getMonthlyData():
-    scr = scrape()
-    scr.getMonthly()
+    scrp.getMonthly()
     dataHist = pd.read_csv('./sih-2022/data/monthly.csv')
     hist = {}
     for i in range(len(dataHist)):
@@ -49,12 +47,14 @@ def getMonthlyData():
 
 @app.route('/predict/ARIMA/SS', methods=['GET'])
 def predictARIMASS():
+    scrp.getDaily()
     p = predictARIMA()
     return json.dumps(p.getSS())
 
 
 @app.route('/predict/ARIMA/MS/<int:step>', methods=['GET'])
 def predictARIMAMS(step):
+    scrp.getDaily()
     p = predictARIMA()
     j = {}
     res = p.getMS(steps=step)
