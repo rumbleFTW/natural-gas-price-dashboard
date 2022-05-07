@@ -1,11 +1,12 @@
 from flask import Flask, request
+import tensorflow as tf
 import json
 import pandas as pd
 
 
 from scrape import scrape
 from predictARIMA import *
-from predictExponentialSmoothing import exponentialSmoothing
+from predictSES import *
 
 scrp = scrape()
 app = Flask(__name__)
@@ -64,5 +65,19 @@ def predictARIMAMS():
         j[i] = item
     return json.dumps(j)
 
+
+@app.route('/predict/SES/SS', methods=['GET'])
+def predictSESSS():
+    scrp.getDaily()
+    p = predictSES()
+    return json.dumps(p.get())
+
+
+@app.route('/predict/CNN/SS', methods=['GET'])
+def predictCNNSS():
+    model = tf.keras.models.load_model('sih-2022/models/singleStepDailyCNN.h5')
+    scrp.getDaily()
+    p = predictSES()
+    return json.dumps(p.get())
 
 app.run()
