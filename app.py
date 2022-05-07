@@ -1,14 +1,15 @@
-from flask import Flask
+from flask import Flask, request
 import json
 import pandas as pd
-from requests import request
 
 
 from scrape import scrape
 from predictARIMA import *
+from predictExponentialSmoothing import exponentialSmoothing
 
 scrp = scrape()
 app = Flask(__name__)
+
 
 @app.route('/', methods=['GET'])
 def main():
@@ -52,8 +53,9 @@ def predictARIMASS():
     return json.dumps(p.getSS())
 
 
-@app.route('/predict/ARIMA/MS/<int:step>', methods=['GET'])
-def predictARIMAMS(step):
+@app.route('/predict/ARIMA/MS', methods=['GET'])
+def predictARIMAMS():
+    step = int(request.args.get('steps'))
     scrp.getDaily()
     p = predictARIMA()
     j = {}
