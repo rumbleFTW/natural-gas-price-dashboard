@@ -3,10 +3,11 @@ import tensorflow as tf
 import json
 import pandas as pd
 
-
+from funcs import sMAPE
 from scrape import scrape
 from predictARIMA import *
 from predictSES import *
+from predictNN import *
 
 scrp = scrape()
 app = Flask(__name__)
@@ -75,9 +76,12 @@ def predictSESSS():
 
 @app.route('/predict/CNN/SS', methods=['GET'])
 def predictCNNSS():
-    model = tf.keras.models.load_model('sih-2022/models/singleStepDailyCNN.h5')
     scrp.getDaily()
-    p = predictSES()
-    return json.dumps(p.get())
+    CNNModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyLSTM.h5', custom_objects={'smape': sMAPE})
+    p = predictNN(CNNModel)
+    return json.dumps(float(p[0][0]))
+
+
+
 
 app.run()

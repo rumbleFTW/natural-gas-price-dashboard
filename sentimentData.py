@@ -1,4 +1,3 @@
-import pandas as pd
 import snscrape.modules.twitter as sntwitter
 import re
 import flair
@@ -22,7 +21,7 @@ class sentimentData:
 
     def getSentiment(self, currDay):
             MAX_TWEETS = 25
-            PREV = currDay
+            PREV = currDay[:4]+'-'+currDay[4:6]+'-'+currDay[6:]
             PRES =  self.nextDay(currDay)
             QUERY = f"natural gas (natural OR gas OR import OR export OR price) until:{PRES} since:{PREV} -filter:links -filter:replies"
             sentiment_model = flair.models.TextClassifier.load('en-sentiment')
@@ -42,3 +41,4 @@ class sentimentData:
                 except:
                     pass
             return curr/nums
+
