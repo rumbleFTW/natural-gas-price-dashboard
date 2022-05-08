@@ -9,10 +9,16 @@ def predictNN(model):
 	i = len(df)-20-1
 	xRes = []
 	res = []
-	for j in range(0, 21):
+	for j in range(1, 21):
 		res.append([df.Price[i+j], df.Sentiment[i+j]])
 	res.append([0, sen.getSentiment(str(df.Day[i+20]))])
 	xRes.append(res)
 	tf.convert_to_tensor(xRes)
-	print(xRes)
 	return model.predict(np.array(xRes))
+
+
+
+if __name__ == '__main__':
+	from funcs import sMAPE
+	model = tf.keras.models.load_model('sih-2022\models\singleStepDailyHybrid.h5', custom_objects={'smape': sMAPE})
+	p = predictNN(model)

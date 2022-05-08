@@ -76,12 +76,26 @@ def predictSESSS():
 
 @app.route('/predict/CNN/SS', methods=['GET'])
 def predictCNNSS():
-    scrp.getDaily()
-    CNNModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyLSTM.h5', custom_objects={'smape': sMAPE})
+    # scrp.getDaily()
+    CNNModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyCNN.h5', custom_objects={'smape': sMAPE})
     p = predictNN(CNNModel)
     return json.dumps(float(p[0][0]))
 
 
+@app.route('/predict/LSTM/SS', methods=['GET'])
+def predictLSTMSS():
+    # scrp.getDaily()
+    LSTMModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyLSTM.h5', custom_objects={'smape': sMAPE})
+    p = predictNN(LSTMModel)
+    return json.dumps(float(p[0][0]))
+
+
+@app.route('/predict/CNN-LSTM/SS', methods=['GET'])
+def predictHybridSS():
+    # scrp.getDaily()
+    hybridModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyHybrid.h5', custom_objects={'smape': sMAPE})
+    p = predictNN(hybridModel)
+    return json.dumps(float(p[0][0]))
 
 
 app.run()
