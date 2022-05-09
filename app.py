@@ -1,4 +1,5 @@
 from flask import Flask, request
+from flask_cors import CORS
 import tensorflow as tf
 import json
 import pandas as pd
@@ -11,6 +12,7 @@ from predictNN import *
 
 scrp = scrape()
 app = Flask(__name__)
+CORS(app)
 
 
 @app.route('/', methods=['GET'])
