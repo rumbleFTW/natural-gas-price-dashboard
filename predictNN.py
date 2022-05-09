@@ -12,9 +12,10 @@ def predictNN(model):
 	for j in range(1, 21):
 		res.append([df.Price[i+j], df.Sentiment[i+j]])
 	res.append([0, sen.getSentiment(str(df.Day[i+20]))])
+	nextDay = sen.nextDay(str(df.Day[i+20]))
 	xRes.append(res)
 	tf.convert_to_tensor(xRes)
-	return model.predict(np.array(xRes))
+	return {str(nextDay): float(model.predict(np.array(xRes))[0][0])}
 
 
 

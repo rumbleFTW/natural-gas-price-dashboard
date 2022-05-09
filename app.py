@@ -15,12 +15,26 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def main():
-    return json.dumps({'name': 'rajdeep', 'desc': 'API is working'})
+    scrp.getDaily()
+    scrp.getWeekly()
+    scrp.getMonthly()
+    dfDaily = pd.read_csv('./sih-2022/data/daily.csv')
+    dfSen = pd.read_csv('./sih-2022/data/dailySentiment.csv')
+    dfSen = dfSen.loc[:, ~dfSen.columns.str.contains('^Unnamed')]
+    if list(dfDaily.Day)[-1] != list(dfSen.Day)[-1]:
+        day = list(dfDaily.Day)[-1]
+        prevDay = list(dfDaily.Day)[-1]
+        price = list(dfDaily.Price)[-1]
+        s = sentimentData()
+        sen = s.getSentiment(str(prevDay))
+        dfSen = dfSen.append([{'Day':day, 'Price': price, 'Sentiment': sen}], ignore_index=True)
+        dfSen.to_csv('./sih-2022/data/dailySentiment.csv')
+        return json.dumps({'SiH-2022': 'Natural-Gas Price Prediction', 'Message': 'Updated all values'})
+    return json.dumps({'SiH-2022': 'Natural-Gas Price Prediction', 'Message': 'All data up-to-date'})
 
 
 @app.route('/historical/daily', methods=['GET'])
 def getDailyData():
-    scrp.getDaily()
     dataHist = pd.read_csv('./sih-2022/data/daily.csv')
     hist = {}
     for i in range(len(dataHist)):
@@ -30,7 +44,6 @@ def getDailyData():
 
 @app.route('/historical/weekly', methods=['GET'])
 def getWeeklyData():
-    scrp.getWeekly()
     dataHist = pd.read_csv('./sih-2022/data/weekly.csv')
     hist = {}
     for i in range(len(dataHist)):
@@ -40,7 +53,6 @@ def getWeeklyData():
 
 @app.route('/historical/monthly', methods=['GET'])
 def getMonthlyData():
-    scrp.getMonthly()
     dataHist = pd.read_csv('./sih-2022/data/monthly.csv')
     hist = {}
     for i in range(len(dataHist)):
@@ -50,7 +62,6 @@ def getMonthlyData():
 
 @app.route('/predict/ARIMA/SS', methods=['GET'])
 def predictARIMASS():
-    scrp.getDaily()
     p = predictARIMA()
     return json.dumps(p.getSS())
 
@@ -58,7 +69,6 @@ def predictARIMASS():
 @app.route('/predict/ARIMA/MS', methods=['GET'])
 def predictARIMAMS():
     step = int(request.args.get('steps'))
-    scrp.getDaily()
     p = predictARIMA()
     j = {}
     res = p.getMS(steps=step)
@@ -69,33 +79,29 @@ def predictARIMAMS():
 
 @app.route('/predict/SES/SS', methods=['GET'])
 def predictSESSS():
-    scrp.getDaily()
     p = predictSES()
     return json.dumps(p.get())
 
 
 @app.route('/predict/CNN/SS', methods=['GET'])
 def predictCNNSS():
-    # scrp.getDaily()
     CNNModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyCNN.h5', custom_objects={'smape': sMAPE})
     p = predictNN(CNNModel)
-    return json.dumps(float(p[0][0]))
+    return json.dumps(p)
 
 
 @app.route('/predict/LSTM/SS', methods=['GET'])
 def predictLSTMSS():
-    # scrp.getDaily()
     LSTMModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyLSTM.h5', custom_objects={'smape': sMAPE})
     p = predictNN(LSTMModel)
-    return json.dumps(float(p[0][0]))
+    return json.dumps(p)
 
 
 @app.route('/predict/CNN-LSTM/SS', methods=['GET'])
 def predictHybridSS():
-    # scrp.getDaily()
     hybridModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyHybrid.h5', custom_objects={'smape': sMAPE})
     p = predictNN(hybridModel)
-    return json.dumps(float(p[0][0]))
+    return json.dumps(p)
 
 
-app.run()
+app.run(host="localhost", port=5000, debug=True)

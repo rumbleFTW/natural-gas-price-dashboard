@@ -42,3 +42,8 @@ class sentimentData:
                     pass
             return curr/nums
 
+
+
+if __name__ == '__main__':
+    sen = sentimentData()
+    sen.getSentiment('20220426')
