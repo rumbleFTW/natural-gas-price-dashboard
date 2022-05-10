@@ -17,9 +17,11 @@ def predictNN(model):
 	tf.convert_to_tensor(xRes)
 	return {str(nextDay): float(model.predict(np.array(xRes))[0][0])}
 
-
+def predictNNMS(model):
+	df = pd.read_csv('sih-2022\data\daily.csv')
+	xRes = [[item] for item in df.Price[-60:]]
+	return model.predict(np.array([xRes]))
 
 if __name__ == '__main__':
 	from funcs import sMAPE
 	model = tf.keras.models.load_model('sih-2022\models\singleStepDailyHybrid.h5', custom_objects={'smape': sMAPE})
-	p = predictNN(model)

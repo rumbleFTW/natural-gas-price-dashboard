@@ -92,6 +92,13 @@ def predictCNNSS():
     return json.dumps(p)
 
 
+@app.route('/predict/CNN/MS', methods=['GET'])
+def predictCNNMS():
+    CNNModel = tf.keras.models.load_model('sih-2022\models\multiStepDailyCNN.h5', custom_objects={'smape': sMAPE})
+    p = predictNNMS(CNNModel)
+    return json.dumps(p)
+
+
 @app.route('/predict/LSTM/SS', methods=['GET'])
 def predictLSTMSS():
     LSTMModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyLSTM.h5', custom_objects={'smape': sMAPE})
