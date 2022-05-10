@@ -96,7 +96,10 @@ def predictCNNSS():
 def predictCNNMS():
     CNNModel = tf.keras.models.load_model('sih-2022\models\multiStepDailyCNN.h5', custom_objects={'smape': sMAPE})
     p = predictNNMS(CNNModel)
-    return json.dumps(p)
+    j = {}
+    for i, item in enumerate(p):
+        j[i] = float(item)
+    return json.dumps(j)
 
 
 @app.route('/predict/LSTM/SS', methods=['GET'])
@@ -106,11 +109,31 @@ def predictLSTMSS():
     return json.dumps(p)
 
 
+@app.route('/predict/LSTM/MS', methods=['GET'])
+def predictLSTMMS():
+    LSTMModel = tf.keras.models.load_model('sih-2022\models\multiStepDailyLSTM.h5', custom_objects={'smape': sMAPE})
+    p = predictNNMS(LSTMModel)
+    j = {}
+    for i, item in enumerate(p):
+        j[i] = float(item)
+    return json.dumps(j)
+
+
 @app.route('/predict/CNN-LSTM/SS', methods=['GET'])
 def predictHybridSS():
     hybridModel = tf.keras.models.load_model('sih-2022\models\singleStepDailyHybrid.h5', custom_objects={'smape': sMAPE})
     p = predictNN(hybridModel)
     return json.dumps(p)
+
+
+@app.route('/predict/CNN-LSTM/MS', methods=['GET'])
+def predictHybridMS():
+    hybridModel = tf.keras.models.load_model('sih-2022\models\multiStepDailyHybrid.h5', custom_objects={'smape': sMAPE})
+    p = predictNNMS(hybridModel)
+    j = {}
+    for i, item in enumerate(p):
+        j[i] = float(item)
+    return json.dumps(j)
 
 
 app.run(host="localhost", port=5000, debug=True)

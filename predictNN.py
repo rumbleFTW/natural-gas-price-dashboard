@@ -20,7 +20,9 @@ def predictNN(model):
 def predictNNMS(model):
 	df = pd.read_csv('sih-2022\data\daily.csv')
 	xRes = [[item] for item in df.Price[-60:]]
-	return model.predict(np.array([xRes]))
+	res = list(model.predict(np.array([xRes])))
+	print(res[0])
+	return res[0]
 
 if __name__ == '__main__':
 	from funcs import sMAPE
