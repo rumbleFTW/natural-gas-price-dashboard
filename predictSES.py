@@ -22,7 +22,6 @@ class exponentialSmoothing:
         for alpha in np.arange(0.0, 1.0, 0.001):
             errors[MSE(self.SES(series, alpha), series)] = alpha
         self.alpha = errors[min(errors)]
-        print("alpha:", self.alpha)
 
     def predict(self, series):
         alpha = self.alpha

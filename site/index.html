@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Natural-Gas Price</title>
+	<link href="https://cdn.jsdelivr.net/npm/daisyui@2.14.3/dist/full.css" rel="stylesheet" type="text/css" />
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.1/chart.js" integrity="sha512-Lii3WMtgA0C0qmmkdCpsG0Gjr6M0ajRyQRQSbTF6BsrVh/nhZdHpVZ76iMIPvQwz1eoXC3DmAg9K51qT5/dEVg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+	<link href="./style.css" rel="stylesheet">
+</head>
+<body>
+	<div data-theme = 'emerald' class="navbar bg-base-100">
+		<div class="flex-1">
+		  <a class="btn btn-ghost normal-case text-xl">Natural-Gas Dashboard</a>
+		</div>
+		<div class="flex-none">
+		  <ul class="menu menu-horizontal p-0">
+			<li><a>Item 1</a></li>
+			<li tabindex="0">
+			  <a>
+				Parent
+				<svg class="fill-current" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path d="M7.41,8.58L12,13.17L16.59,8.58L18,10L12,16L6,10L7.41,8.58Z"/></svg>
+			  </a>
+			  <ul class="p-2 bg-base-100">
+				<li><a>Submenu 1</a></li>
+				<li><a>Submenu 2</a></li>
+			  </ul>
+			</li>
+			<li><a>Item 3</a></li>
+		  </ul>
+		</div>
+	  </div>
+	<!-- <div class = "price--projected">
+		<h1>Exponential Smoothing</h1>
+		<h2 id = "price--ses"> ...</h2>
+	</div>
+	<div class = "price--projected">
+		<h1>ARIMA</h1>
+		<h2 id = "price--arima"> ...</h2>
+	</div>
+	<div class = "price--projected">
+		<h1>CNN</h1>
+		<h2 id = "price--cnn"> ...</h2>
+	</div>
+	<div class = "price--projected">
+		<h1>LSTM</h1>
+		<h2 id = "price--lstm"> ...</h2>
+	</div>
+	<div class = "price--projected">
+		<h1>CNN-LSTM</h1>
+		<h2 id = "price--hybrid"> ...</h2>
+	</div> -->
+	<div data-theme = 'emerald' class="stats shadow" id="pred--container">
+		<div class="stat">
+		  <div class="stat-figure text-secondary">
+			<p>USD/MMBtu</p>
+		  </div>
+		  <div class="stat-title">Exp. Smoothing</div>
+		  <div class="stat-value" id="price--ses"> ...</div>
+		  <div class="stat-desc">Jan 1st - Feb 1st</div>
+		</div>
+		
+		<div class="stat">
+		  <div class="stat-figure text-secondary">
+			<p>USD/MMBtu</p>
+		  </div>
+		  <div class="stat-title">ARIMA</div>
+		  <div class="stat-value" id="price--arima"> ...</div>
+		  <div class="stat-desc">↗︎ 400 (22%)</div>
+		</div>
+		
+		<div class="stat">
+		  <div class="stat-figure text-secondary">
+			<p>USD/MMBtu</p>
+		  </div>
+		  <div class="stat-title">CNN</div>
+		  <div class="stat-value" id="price--cnn"> ...</div>
+		  <div class="stat-desc">↘︎ 90 (14%)</div>
+		</div>
+		<div class="stat">
+		  <div class="stat-figure text-secondary">
+			<p>USD/MMBtu</p>
+		  </div>
+		  <div class="stat-title">LSTM</div>
+		  <div class="stat-value" id="price--lstm"> ...</div>
+		  <div class="stat-desc">↘︎ 90 (14%)</div>
+		</div>
+		<div class="stat">
+		  <div class="stat-figure text-secondary">
+			<p>USD/MMBtu</p>
+		  </div>
+		  <div class="stat-title">CNN-LSTM</div>
+		  <div class="stat-value" id="price--hybrid"> ...</div>
+		  <div class="stat-desc">↘︎ 90 (14%)</div>
+		</div>
+	  </div>
+
+
+	  <div class="chart--container">
+		<canvas class="chart" id="chart--daily"></canvas>
+		<canvas class="chart" id="chart--weekly"></canvas>
+		<canvas class="chart" id="chart--monthly"></canvas>
+	  </div>
+
+
+</body>
+<script type="text/javascript" src="./script.js"></script>
+</html>

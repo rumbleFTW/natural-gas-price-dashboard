@@ -1,0 +1,29 @@
+body
+{
+	background-color: lightblue;
+}
+
+#pred--container
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	margin: 10px;
+}
+
+.chart--container
+{
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+.chart
+{
+	height: 300px;
+	width: 490px;
+	margin: 10px;
+	background-color: aliceblue;
+	border-radius: 10px;
+	padding: 10px;
+}
