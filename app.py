@@ -135,5 +135,5 @@ def predictHybridMS():
         j[i] = float(item)
     return json.dumps(j)
 
-
-app.run(host="localhost", port=5000, debug=True)
+if __name__ == '__main__':
+    app.run(debug=True)
