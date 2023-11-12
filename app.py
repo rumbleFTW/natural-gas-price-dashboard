@@ -10,6 +10,7 @@ from predictARIMA import *
 from predictSES import *
 from predictNN import *
 
+#Initialize App
 scrp = scrape()
 app = Flask(__name__)
 CORS(app)
